@@ -1,4 +1,5 @@
 require 'rets'
+require 'json'
 
 
 # Pass the :login_url, :username, :password and :version of RETS
@@ -26,10 +27,18 @@ photos.each_with_index do |data, index|
 
   seq ||= index
 
-  File.open("property-#{seq.to_s}.jpg", 'w') do |file|
+  # write jpg files
+  File.open("image-#{seq.to_s}.jpg", 'w') do |file|
 
     file.write data.body
   end
+
+  # serialize each image data object to a json text file
+  File.open("image-#{seq.to_s}.json", 'w') do |file|
+    data.body = nil
+    file.write(JSON.pretty_generate(data.to_h))
+  end
+
 end
 
 puts photos.length.to_s + ' photos saved.'
