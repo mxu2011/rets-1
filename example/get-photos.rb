@@ -20,7 +20,14 @@ photos = client.objects '*', {
 }
 
 photos.each_with_index do |data, index|
-  File.open("property-#{index.to_s}.jpg", 'w') do |file|
+  seq = data.headers['object-id'] if data.respond_to? ('headers')
+
+  seq = (seq.to_i - 1) if !seq.nil?
+
+  seq ||= index
+
+  File.open("property-#{seq.to_s}.jpg", 'w') do |file|
+
     file.write data.body
   end
 end
