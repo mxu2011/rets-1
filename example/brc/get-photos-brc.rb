@@ -4,10 +4,10 @@ require 'json'
 
 # Pass the :login_url, :username, :password and :version of RETS
 client = Rets::Client.new({
-                              login_url: 'http://rets.torontomls.net:6103/rets-treb3pv/server/login',
-                              username: 'D16nic',
-                              password: 'B#65n17',
-                              version: 'RETS/1.5'
+                              login_url: 'http://reb.retsiq.com/contactres/rets/login',
+                              username: 'RETSREWDOTCA',
+                              password: '!R3007E5TA7E!@!',
+                              version: 'RETS/1.7.2'
                           })
 
 
@@ -17,7 +17,7 @@ client = Rets::Client.new({
 photos = client.objects '*', {
   resource: 'Property',
   object_type: 'Photo',
-  resource_id: 'W3906742'
+  resource_id: '262218062'  # for BRC, this is remote_sysid
 }
 
 photos.each_with_index do |data, index|
