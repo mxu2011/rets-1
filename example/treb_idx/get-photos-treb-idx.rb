@@ -17,7 +17,7 @@ client = Rets::Client.new({
 photos = client.objects '*', {
   resource: 'Property',
   object_type: 'Photo',
-  resource_id: 'W3906742'
+  resource_id: 'W3906742' # for TrebIDX, this is mls_num
 }
 
 photos.each_with_index do |data, index|
