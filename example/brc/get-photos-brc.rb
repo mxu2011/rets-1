@@ -1,5 +1,6 @@
 require 'rets'
 require 'json'
+require '../common'
 
 
 # Pass the :login_url, :username, :password and :version of RETS
@@ -20,28 +21,6 @@ photos = client.objects '*', {
   resource_id: '262218062'  # for BRC, this is remote_sysid
 }
 
-photos.each_with_index do |data, index|
-  seq = data.headers['object-id'] if data.respond_to? ('headers')
+Common::process_photos(photos)
 
-  puts "object-id=#{seq}, index=#{index}"
-
-  seq = (seq.to_i - 1) if !seq.nil?
-
-  seq ||= index
-
-  # write jpg files
-  File.open("image-#{seq.to_s}.jpg", 'w') do |file|
-
-    file.write data.body
-  end
-
-  # serialize each image data object to a json text file
-  File.open("image-#{seq.to_s}.json", 'w') do |file|
-    data.body = nil
-    file.write(JSON.pretty_generate(data.to_h))
-  end
-
-end
-
-puts photos.length.to_s + ' photos saved.'
 client.logout
