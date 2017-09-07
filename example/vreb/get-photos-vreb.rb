@@ -1,12 +1,12 @@
 require 'rets'
 require 'json'
-
+require '../common'
 
 # Pass the :login_url, :username, :password and :version of RETS
 client = Rets::Client.new({
-                              login_url: 'http://rewwls:<RETS_WLS_PASSWORD>@matrix.buywhistler.com/rets/login.ashx',
-                              username: 'rewwls',
-                              password: 'powder',
+                              login_url: 'http://matrixrets.victoriamls.ca/rets/login.ashx',
+                              username: 'uvbn67',
+                              password: '59jklv22',
                               version: 'RETS/1.7.2'
                           })
 
@@ -17,31 +17,9 @@ client = Rets::Client.new({
 photos = client.objects '*', {
   resource: 'Property',
   object_type: 'LargePhoto',
-  resource_id: '18272734' # for wls, this is mls_num
+  resource_id: '13893602' # for vreb
 }
 
-photos.each_with_index do |data, index|
-  seq = data.headers['object-id'] if data.respond_to? ('headers')
+Common::process_photos(photos)
 
-  puts "object-id=#{seq}, index=#{index}"
-
-  seq = (seq.to_i - 1) if !seq.nil?
-
-  seq ||= index
-
-  # write jpg files
-  File.open("image-#{seq.to_s}.jpg", 'w') do |file|
-
-    file.write data.body
-  end
-
-  # serialize each image data object to a json text file
-  File.open("image-#{seq.to_s}.json", 'w') do |file|
-    data.body = nil
-    file.write(JSON.pretty_generate(data.to_h))
-  end
-
-end
-
-puts photos.length.to_s + ' photos saved.'
 client.logout
